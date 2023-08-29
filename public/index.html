@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syook</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h1>Syook Assignment</h1>
+    <div id="container">
+        <div class="card">
+            <h2>Encrypted String</h2>
+        </div>
+        <div class="card">
+            <h2>Decoded String</h2>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        const encryptDiv = document.getElementsByClassName('card');
+        const p = document.createElement('p');
+        const p2 = document.createElement('p');
+        let dataToBeEncrypted;
+        
+        socket.emit('first', 'firstMessage')
+        socket.on('mess', (message) => {
+            p.innerText = message.name + '|' + message.origin +'|' + message.destination + '|' +message.secret_key;
+            encryptDiv[0].append(p);
+            dataToBeEncrypted = p.innerText
+        });
+
+        let time = 10500
+        setInterval(()=> {
+            
+            socket.emit('dataToBeEncrypted', dataToBeEncrypted);
+            socket.on('mess2', message => {
+                p2.innerHTML = '<div>'+ 'Name:  ' + message.name+'</div>' + '<div>'+ 'Origin:   '+message.origin+'</div>' + '<div>'+ 'Destination:  '+message.destination+'</div>' + '<div>'+ 'Secure Key:  '+message.secret_key+'</div>'
+                encryptDiv[1].append(p2);
+                
+            });
+            time = 10000;
+            console.log(time)
+        },time)
+        
+
+        
+    </script>
+</body>
+</html>
