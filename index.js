@@ -107,7 +107,7 @@ io.on("connection", (socket) => {
                 secret_key: encryptedKey
             };
             io.emit("mess", encryptedMessage);
-        }, 10000);
+        }, 9900);
     });
 
 
